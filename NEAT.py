@@ -26,7 +26,7 @@ def eval_genome(genome, config):
         observations = envi.observe()
         output = net.activate(observations)
         # print(output)
-        score = envi.scoreCheck(output)
+        score += envi.scoreCheck(output)
         # print(score, "at ", envi.time)
 
     # print(score)

@@ -346,6 +346,6 @@ def test_scorer():
         print(envi.scoreCheck(lis))
 
 if __name__ == "__main__":
-    # main() # <-- Runs the pendulum simulation only
-    load_model() # <-- Loads from latest save, trains for one iteration
+    main() # <-- Runs the pendulum simulation only
+    # load_model() # <-- Loads from latest save, trains for one iteration
     #test_scorer() # <-- to test observer method
