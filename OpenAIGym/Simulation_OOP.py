@@ -32,6 +32,7 @@ class Simulation:
         self.loss_fn = tf.keras.losses.binary_crossentropy
 
 
+    # rendering / simulation purposes (multi simulations)
     def run_episodes(self, num, render=False):
         for i in range(num):
             if render == True:
@@ -41,7 +42,7 @@ class Simulation:
                 self.run_episode(i)
         self.print_statistics()
 
-
+    # rendering / simulation purposes (single simulation)
     def run_episode(self, episode, render=False):
         episode_rewards = 0
         obs, info = self.env.reset(seed=episode)
@@ -60,11 +61,12 @@ class Simulation:
                 self.fig.canvas.flush_events()
                 plt.pause(0.001)  # Pause to create the animation effect
 
-            # if done or truncated:
-            #     break
+            if done or truncated:
+                break
 
         self.totals.append(episode_rewards)
 
+    # hard coded policy
     def basic_policy(self, obs):
         angle = obs[2]
         return 0 if angle < 0 else 1
