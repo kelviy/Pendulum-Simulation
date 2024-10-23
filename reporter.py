@@ -1,72 +1,77 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from pathlib import Path
+
 
 class Reporter:
-    pivot_position = []
-    pivot_velocity = []
-    pivot_acceleration = []
-    pendulum_angle = []
-    pendulum_angular_velocity = []
-    pendulum_angular_acceleration = []
-    time = []
-    score = []
+    stats = dict(
+        pivot_position=[],
+        pivot_velocity=[],
+        pivot_acceleration=[],
+        pendulum_angle=[],
+        pendulum_angular_velocity=[],
+        pendulum_angular_acceleration=[],
+        time=[],
+        score=[]
+    )
+    descriptions = ["Pivot Location",
+                    "Pivot Velocity",
+                    "Pivot Acceleration",
+                    "Pendulum Angle",
+                    "Pendulum Angular Velocity",
+                    "Pendulum Angular Acceleration",
+                    "Time",
+                    "Score"]
 
     def __init__(self, dt, environment):
         self.dt = dt
         self.environment = environment
 
     def record(self):
-        m_loc = self.environment.pendulum_obj.pivot_x
-        m_velocity = self.environment.x_velocity
-        m_acceleration = self.environment.x_acceleration
-        
-        # p_angle = np.arcsin(np.sin(self.environment.pendulum_obj.theta))
-        p_angle = self.environment.pendulum_obj.theta % (np.pi * 2)
+        temp_stats = self.environment.return_state()
 
-        if np.pi - 0.5 <= p_angle <= np.pi + 0.5:
+        if np.pi - 0.5 <= temp_stats[3] % (np.pi * 2) <= np.pi + 0.5:
             print("Score!")
 
-        p_angular_velocity = self.environment.pendulum_obj.omega
-        p_angular_acceleration = self.environment.pendulum_obj.derivatives(self.environment.x_acceleration)
-
         print("-------------------")
-        print("Time:", self.environment.time)
-        print("Pivot Location:", m_loc)
-        print("Pivot Velocity:", m_velocity)
-        print("Pivot Acceleration:", m_acceleration)
-        print("Pendulum Angle:", p_angle)
-        print("Pendulum Angular Velocity:", p_angular_velocity)
-        print("Pendulum Angular Acceleration: ", p_angular_acceleration)
 
-        self.pivot_position.append(m_loc)
-        self.pivot_velocity.append(m_velocity)
-        self.pivot_acceleration.append(m_acceleration)
-        self.pendulum_angle.append(p_angle)
-        self.pendulum_angular_velocity.append(p_angular_velocity)
-        self.pendulum_angular_acceleration.append(p_angular_acceleration)
-        self.time.append(self.environment.time)
-        self.score.append(self.environment.score)
+        # printing
+        for i, text in enumerate(self.descriptions):
+            print(text, temp_stats[i], sep=":\t\t\t")
 
-    
+        # storing
+        for i, key in enumerate(self.stats.keys()):
+            self.stats[key].append(temp_stats[i])
+
     def plot(self):
-        fig, axs = plt.subplots(4, 2, layout="constrained")
+        # fig, axs = plt.subplots(4, 2, layout="constrained")
+
+        fig, axs = plt.subplot_mosaic([["Pivot Location", "Pivot Velocity", "Pivot Acceleration"],
+                                       ["Pendulum Angle", "Pendulum Angular Velocity", "Pendulum Angular Acceleration"],
+                                       ["Score", "Score", "Score"]],
+                                      layout="constrained", figsize=(12.8, 8))
+
         fig.suptitle('Pendulum Statistics')
 
-        axs[0, 0].plot(self.time, self.pivot_position)
-        axs[0, 0].set_title('Pivot Position')
-        axs[1, 0].plot(self.time, self.pivot_velocity)
-        axs[1, 0].set_title('Pivot Velocity')
-        axs[2, 0].plot(self.time, self.pivot_acceleration)
-        axs[2, 0].set_title('Pivot Acceleration')
+        temp_desc = self.descriptions[:]
+        temp_desc.remove("Time")
+        temp_key = list(self.stats.keys())
+        temp_key.remove("time")
 
-        axs[3,0].plot(self.time,self.score)
-        axs[3,0].set_title('Score vs Time')
+        descriptions_key = {"Pivot Location": "pivot_position",
+                            "Pivot Velocity": "pivot_velocity",
+                            "Pivot Acceleration": "pivot_acceleration",
+                            "Pendulum Angle": "pendulum_angle",
+                            "Pendulum Angular Velocity": "pendulum_angular_velocity",
+                            "Pendulum Angular Acceleration": "pendulum_angular_acceleration",
+                            "Time": "time",
+                            "Score": "score"}
 
-        axs[0, 1].plot(self.time, self.pendulum_angle)
-        axs[0, 1].set_title('Pendulum Angle')
-        axs[1, 1].plot(self.time, self.pendulum_angular_velocity)
-        axs[1, 1].set_title('Pendulum Velocity')
-        axs[2, 1].plot(self.time, self.pendulum_angular_acceleration)
-        axs[2, 1].set_title('Pendulum Acceleration')
+        for key, ax in axs.items():
+            ax.plot(self.stats["time"], self.stats[descriptions_key[key]])
+            ax.set_title('Time vs ' + key)
 
-        plt.savefig("game_statistics")
+        # plt.show()
+        save_path = Path() / "Output"
+        save_path.mkdir(parents=True, exist_ok=True)
+        plt.savefig(save_path / "game_statistics")

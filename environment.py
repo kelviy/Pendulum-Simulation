@@ -203,7 +203,18 @@ class Environment:
 
     def observe(self):
         return (self.pendulum_obj.pivot_x, self.pendulum_obj.theta, self.pendulum_obj.omega)
-    
+
+    def return_state(self):
+        return (self.pendulum_obj.pivot_x,
+                self.x_velocity,
+                self.x_acceleration,
+                self.pendulum_obj.theta,
+                self.pendulum_obj.omega,
+                self.pendulum_obj.derivatives(self.x_acceleration),
+                self.time,
+                self.score)
+
+
     def run_model(self, winner):
         # Pygame setup
         pygame.init()
