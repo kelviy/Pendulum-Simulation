@@ -326,26 +326,6 @@ class Environment:
 
             self.dt = clock.tick(60)/1000
 
-
-def main():
-    environment = Environment()
-    environment.run()
-    environment.plot()
-
-def load_model():
-    local_dir = os.path.dirname(__file__)
-    config_path = os.path.join(local_dir, 'config_pendulum')
-    config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
-                         neat.DefaultSpeciesSet, neat.DefaultStagnation,
-                         config_path)
-    
-    environment = Environment()
-
-    p = neat.Checkpointer.restore_checkpoint('models/neat-checkpoint-9')
-    winner = p.run(NEAT.eval_genomes, 1)
-
-    winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
-    environment.run_model(winner_net)
     
 def test_scorer():
     envi = Environment()
@@ -355,8 +335,3 @@ def test_scorer():
         user_input= eval(input("Enter Velocity: "))
         lis = [user_input]
         print(envi.scoreCheck(lis))
-
-if __name__ == "__main__":
-    main() # <-- Runs the pendulum simulation only
-    # load_model() # <-- Loads from latest save, trains for one iteration
-    #test_scorer() # <-- to test observer method
