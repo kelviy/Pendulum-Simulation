@@ -4,16 +4,15 @@ This repository consists of 3 modules.
 - Neat Model
 - OpenAIGym Implementation
 
-### Pendulum Engine
-Basic pendulum physics simulator that is based on Euler's Method to approximate a single pendulum's motion with respect to a horizontal force acting on the base of the pendulum. 
-The simulation is implemented using Pygame and Numpy. This pendulum engine acts as an environment for reinforcement learnings models to train and run on. Disclaimer, the implementation's very rudimentary in it's present state. The engine has a rough implmentation of a statistics reporter and a scoring certeria (points awarded based on pendulum being balanced upwright)
-
 ![pendulum simulation](resources/pendulum.png "pendulum simulation")
 
 ![pendulum gif](resources/pendulum.gif "pendulum gif")
 
 ![simulation statistics](resources/game_statistics.png "simulation statistics")
 
+### Pendulum Engine
+Basic pendulum physics simulator that is based on Euler's Method to approximate a single pendulum's motion with respect to a horizontal force acting on the base of the pendulum. 
+The simulation is implemented using Pygame and Numpy. This pendulum engine acts as an environment for reinforcement learnings models to train and run on. Disclaimer, the implementation's very rudimentary in it's present state. The engine has a rough implmentation of a statistics reporter and a scoring certeria (points awarded based on pendulum being balanced upwright)
 
 ### Neat Model 
 Using the neat-python library, a NEAT model is able to run and train on the Pendulum Engine. However, the model performs undesired actions when trained. Most noticably spinning the pendulum as fast as it can to earn points. 
