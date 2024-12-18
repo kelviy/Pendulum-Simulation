@@ -1,10 +1,10 @@
 import pygame
-import pendulum
-import reporter
+import pendulum_engine.pendulum as pendulum
+import pendulum_engine.reporter as reporter
 import numpy as np
 import neat
 import os
-import NEAT
+from neat_model import NEAT
 import neat.parallel
 import math
 

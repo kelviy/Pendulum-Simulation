@@ -72,6 +72,10 @@ class Reporter:
             ax.set_title('Time vs ' + key)
 
         # plt.show()
-        save_path = Path() / "Output"
+        save_path = Path() / ".." / "Output"
         save_path.mkdir(parents=True, exist_ok=True)
         plt.savefig(save_path / "game_statistics")
+
+        # print averages
+        for key, ax in axs.items():
+            print(f"The average of {key}: {np.average(self.stats[descriptions_key[key]])}" )

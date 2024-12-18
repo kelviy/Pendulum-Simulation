@@ -1,9 +1,10 @@
 import neat.parallel
-import environment
+from pendulum_engine import environment
 import os
 import neat
 import multiprocessing
-import math
+from pathlib import Path
+import pickle
 
 def eval_genomes(genomes, config):
     for genome_id, genome in genomes:
@@ -45,7 +46,11 @@ def main(config_file):
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
-    p.add_reporter(neat.Checkpointer(2, filename_prefix= "models/neat-checkpoint-"))
+
+    path = Path() / '..' / 'Output' / 'models'
+    path.mkdir(parents=True, exist_ok=True)
+
+    #p.add_reporter(neat.Checkpointer(2, filename_prefix= (path / 'neat-').absolute().as_posix()))
     # Run for up to 300 generations.
     pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
     winner = p.run(pe.evaluate, 10)
@@ -55,8 +60,9 @@ def main(config_file):
 
     winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
 
-    envi = environment.Environment()
-    envi.run_model(winner_net)
+    with open(path / 'neat-run', "wb") as f:
+        pickle.dump(winner_net, f)
+        f.close()
 
 if __name__ == "__main__":
     local_dir = os.path.dirname(__file__)

@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from pathlib import Path
-
 class Simulation:
 
     # hyper-parameters
@@ -146,7 +145,7 @@ class Simulation:
 
     def save(self):
         model_name = "simple_reinforce_model"
-        model_version = "0001"
+        model_version = "0002"
         model_dir = Path() / "Output" / model_name / model_version  # Directory path
         model_path = model_dir / "SRM.keras"  # File path
 
