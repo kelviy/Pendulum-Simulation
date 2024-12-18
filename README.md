@@ -4,9 +4,8 @@ This repository consists of 3 modules.
 - Neat Model
 - OpenAIGym Implementation
 
-![pendulum simulation](resources/pendulum.png "pendulum simulation")
-
 ![pendulum gif](resources/pendulum.gif "pendulum gif")
+![pendulum simulation](resources/pendulum.png "pendulum simulation")
 
 ![simulation statistics](resources/game_statistics.png "simulation statistics")
 
