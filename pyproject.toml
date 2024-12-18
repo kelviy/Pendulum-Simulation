@@ -12,5 +12,6 @@ dependencies = [
     "pygame>=2.6.1",
     "pyqt6>=6.8.0",
     "tensorflow[and-cuda]>=2.18.0",
+    #    "tensorflow-cpu" # for cpu
     "tf-keras>=2.18.0",
 ]
