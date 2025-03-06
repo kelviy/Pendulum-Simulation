@@ -5,7 +5,7 @@ Purpose is to Test:
 
 Options/Arguments for testing script are listed as follows: 
 
-"engine" - for running pendulum simulation
+"sim" - for running pendulum simulation
 
 "model-train" - for training model
 "model-run" - for running model on engine
@@ -37,7 +37,7 @@ def main():
     # runs arguments
     env = environment.Environment()
 
-    if "engine" in args:
+    if "sim" in args:
         env.run()
 
     if "stat" in args:
